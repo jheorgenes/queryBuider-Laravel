@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -131,13 +132,71 @@ class MainController extends Controller
         // $results = DB::table('products')->orderBy('price', 'desc')->get();
 
         // ordenando os produtos por preço decrecente e buscando apenas 3 resultados
-        $results = DB::table('products')
-                        ->orderBy('price', 'desc')
-                        ->limit(3)
-                        ->get();
+        // $results = DB::table('products')
+        //                 ->orderBy('price', 'desc')
+        //                 ->limit(3)
+        //                 ->get();
 
-        $this->showDataTable($results);
+        // $this->showDataTable($results);
         // $this->showRawData($results);
+
+        // INSERT
+        // Adicionando um novo cliente
+        // $new_cliente = [
+            // 'client_name' => 'João Ribeiro',
+            // 'email' => 'joao.ribeiro@gmail.com'
+        // ];
+
+        // DB::table('clients')->insert($new_cliente);
+
+        // DB::table('clients')
+        //     ->insert([
+        //         'client_name' => 'João Ribeiro 2',
+        //         'email' => 'joao.ribeiro2@gmail.com'
+        //     ]);
+
+        // Adicionar dois ou mais clientes conforme abaixo
+        // DB::table('clients')
+        //     ->insert([
+        //         [
+        //             'client_name' => 'Cliente 1',
+        //             'email' => 'cliente1@gmail.com',
+        //             'created_at' => Carbon::now()
+        //         ],
+        //         [
+        //             'client_name' => 'Cliente 2',
+        //             'email' => 'cliente2@gmail.com',
+        //             'created_at' => Carbon::now()
+        //         ],
+        //     ]);
+
+        // UPDATE
+        // DB::table('clients')
+        //     ->where('id', 505)
+        //     ->update([
+        //         'client_name' => 'Cliente 3',
+        //         'email' => 'cliente3@gmail.com',
+        //     ]);
+
+        // DB::table('clients')
+        //     ->where('client_name', 'Cliente 2')
+        //     ->where('id', 506)
+        //     ->update([
+        //         'client_name' => 'Cliente 4',
+        //         'email' => 'cliente4@gmail.com',
+        //     ]);
+
+        // Deletando com hard delete
+        // DB::table('clients')
+        //     ->where('client_name', 'Cliente 4')
+        //     ->delete();
+
+        // Deletando com soft delete
+        DB::table('clients')
+            ->where('client_name', 'Cliente 3')
+            ->update([
+                'deleted_at' => Carbon::now()
+            ]);
     }
 
     private function showRawData($data)
