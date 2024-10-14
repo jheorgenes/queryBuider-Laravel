@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,8 +63,81 @@ class MainController extends Controller
         //             ->orWhere('product_name', 'like', 'A%')
         //             ->get();
 
-        // $this->showDataTable($results);
-        $this->showRawData($results);
+
+        // $results = DB::table('products')
+        //             ->where([
+        //                 ['price', '>', 50],
+        //                 ['product_name', 'like', 'A%']
+        //             ])->get();
+
+        // Query mais complexa (usando varios operadores OU)
+        // $results = DB::table('products')
+        //             ->where('price', '>', '90')
+        //             ->orWhere(function(Builder $query) {
+        //                 $query->where('product_name', 'Banana')
+        //                       ->orWhere('product_name', 'Cereja');
+        //             })->get();
+
+        // Buscando todos os produtos que não iniciam com a letra M
+        // $results = DB::table('products')->where('product_name', 'not like', 'M%')->get();
+
+        // Buscando todos os produtos que não iniciam com a letra M
+        // $results = DB::table('products')->whereNot('product_name', 'like', 'M%')->get();
+
+        // $results = DB::table('clients')
+        //             ->whereAny(['client_name', 'email'], 'like', '%va%')->get();
+
+        //between
+        // $results = DB::table('products')
+        //             ->whereBetween('price', [25,50])->get();
+
+        // Ou usando a negativa do between
+        // $results = DB::table('products')
+        //             ->whereNotBetween('price', [25,50])->get();
+
+        // Usando a clausula In
+        // SELECT * FROM products WHERE id in (1,3,5);
+        // $results = DB::table('products')
+        //             ->whereIn('id', [1,3,5])->get();
+
+        // $results = DB::table('products')
+        //             ->whereNotIn('id', [1,3,5])->get();
+
+        // $results = DB::table('clients')
+        //             ->whereDate('created_at', '2032-01-25')->get();
+
+        // $results = DB::table('clients')
+        //             ->whereDay('created_at', '10')->get();
+
+
+        // DADOS AGREGADOS
+        // $count = DB::table('products')->count();
+        // $max_price = DB::table('products')->max('price');
+        // $min_price = DB::table('products')->min('price');
+        // $avg_price = DB::table('products')->avg('price'); //Média
+        // $sum_prices = DB::table('products')->sum('price');
+
+        // echo '<pre>';
+        // print_r([
+        //     'count' => $count,
+        //     'max_price' => $max_price,
+        //     'min_price' => $min_price,
+        //     'avg_price' => $avg_price,
+        //     'sum_prices' => $sum_prices
+        // ]);
+        // echo '</pre>';
+
+        // ordenando os produtos por preço decrecente
+        // $results = DB::table('products')->orderBy('price', 'desc')->get();
+
+        // ordenando os produtos por preço decrecente e buscando apenas 3 resultados
+        $results = DB::table('products')
+                        ->orderBy('price', 'desc')
+                        ->limit(3)
+                        ->get();
+
+        $this->showDataTable($results);
+        // $this->showRawData($results);
     }
 
     private function showRawData($data)
